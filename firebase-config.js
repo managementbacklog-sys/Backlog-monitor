@@ -1,8 +1,8 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyC5KXvR6TQ7bM8JjKkLmNpOqRsTuvWxYz0",
+  apiKey: "AIzaSyB6PUH2DVgwiZrPLWC4yNNjlqqDhdSeM5I",
   authDomain: "volvopartbacklog.firebaseapp.com",
   projectId: "volvopartbacklog",
-  storageBucket: "volvopartbacklog.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef1234567890abcdef"
+  storageBucket: "volvopartbacklog.firebasestorage.app",
+  messagingSenderId: "840351131124",
+  appId: "1:840351131124:web:374722674d214c588305a1"
 };

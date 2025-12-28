@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backlog Monitor Pro</title>
+    <meta name="description" content="Sistem monitoring backlog dengan auto-cleanup 30 hari">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📊</text></svg>">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <style>
+        /* [ALL CSS FROM PREVIOUS MODERN VERSION] */
+        /* Copy semua CSS dari versi modern sebelumnya */
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #8b5cf6;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+        
+        /* [REST OF CSS...] */
+        /* Copy semua CSS styling dari versi sebelumnya */
+    </style>
+</head>
+<body>
+    <!-- LOADING SCREEN -->
+    <div id="loadingScreen" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; display: flex; align-items: center; justify-content: center; z-index: 9999;">
+        <div style="text-align: center;">
+            <div style="width: 60px; height: 60px; border: 4px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+            <div style="font-size: 18px; font-weight: 600; color: var(--text-primary);">Loading Backlog Monitor</div>
+            <div style="color: var(--text-secondary); margin-top: 10px;">Initializing system...</div>
+        </div>
+    </div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" style="display: none;">
+        <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <div style="background: white; border-radius: var(--radius); padding: 40px; width: 100%; max-width: 400px; box-shadow: var(--shadow-lg);">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary), var(--secondary)); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: white; font-size: 32px;">
+                        📊
+                    </div>
+                    <h1 style="font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 10px;">
+                        Backlog Monitor
+                    </h1>
+                    <p style="color: var(--text-secondary);">
+                        Sistem monitoring backlog dengan auto-cleanup
+                    </p>
+                </div>
+                
+                <div id="loginForm">
+                    <h2 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 20px; text-align: center;">
+                        Login dengan Google
+                    </h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 30px; text-align: center; font-size: 14px;">
+                        Gunakan akun Google perusahaan untuk akses sistem
+                    </p>
+                    
+                    <button id="googleLoginBtn" style="width: 100%; padding: 14px; background: white; border: 2px solid var(--border); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; gap: 12px; font-weight: 500; color: var(--text-primary); cursor: pointer; transition: all 0.3s;">
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                        </svg>
+                        <span>Login dengan Google</span>
+                    </button>
+                    
+                    <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border);">
+                        <p style="text-align: center; color: var(--text-secondary); font-size: 12px;">
+                            © 2024 Backlog Monitor Pro<br>
+                            Data disimpan di Firebase Cloud<br>
+                            Auto-cleanup setelah 30 hari
+                        </p>
+                    </div>
+                </div>
+                
+                <div id="registerForm" style="display: none;">
+                    <h2 style="font-size: 18px; font-weight: 600; color: var(--text-primary); margin-bottom: 20px; text-align: center;">
+                        Register Admin
+                    </h2>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-primary); font-weight: 500;">Nama Lengkap</label>
+                        <input type="text" id="registerName" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-primary); font-weight: 500;">Email</label>
+                        <input type="email" id="registerEmail" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+                    </div>
+                    
+                    <div style="margin-bottom: 30px;">
+                        <label style="display: block; margin-bottom: 8px; color: var(--text-primary); font-weight: 500;">Password</label>
+                        <input type="password" id="registerPassword" style="width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);">
+                    </div>
+                    
+                    <button id="registerBtn" style="width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); font-weight: 500; cursor: pointer; margin-bottom: 20px;">
+                        Register sebagai Admin
+                    </button>
+                    
+                    <button id="backToLogin" style="width: 100%; padding: 12px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm); font-weight: 500; cursor: pointer; color: var(--text-secondary);">
+                        ← Kembali ke Login
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP (hidden until login) -->
+    <div id="appContainer" style="display: none;">
+        <!-- [ALL MAIN APP HTML FROM PREVIOUS VERSION] -->
+        <!-- Copy semua HTML aplikasi dari versi sebelumnya -->
+    </div>
+
+    <script src="firebase-config.js"></script>
+    <script>
+        // ====================
+        // INITIALIZE
+        // ====================
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Initialize Firebase
+            try {
+                await initFirebase();
+                
+                // Check auth state
+                firebase.auth().onAuthStateChanged(async (user) => {
+                    if (user) {
+                        // User is logged in
+                        await loadUserData(user);
+                        showApp();
+                    } else {
+                        // No user logged in
+                        showLogin();
+                    }
+                    
+                    // Hide loading screen
+                    document.getElementById('loadingScreen').style.display = 'none';
+                });
+                
+            } catch (error) {
+                console.error('Initialization error:', error);
+                document.getElementById('loadingScreen').innerHTML = `
+                    <div style="text-align: center; padding: 20px;">
+                        <div style="color: var(--danger); font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                        <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Initialization Error</div>
+                        <div style="color: var(--text-secondary); margin-bottom: 20px;">${error.message}</div>
+                        <button onclick="location.reload()" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer;">
+                            Reload Page
+                        </button>
+                    </div>
+                `;
+            }
+        });
+        
+        // ====================
+        // AUTH FUNCTIONS
+        // ====================
+        async function initFirebase() {
+            // Configuration will be set in firebase-config.js
+            if (!firebase.apps.length) {
+                await firebase.initializeApp(firebaseConfig);
+            }
+        }
+        
+        function showLogin() {
+            document.getElementById('loginScreen').style.display = 'block';
+            document.getElementById('appContainer').style.display = 'none';
+            
+            // Setup login button
+            document.getElementById('googleLoginBtn').onclick = loginWithGoogle;
+            
+            // Setup register toggle
+            document.getElementById('backToLogin').onclick = () => {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+            };
+            
+            // Check if need registration (first user)
+            firebase.firestore().collection('users').get().then(snapshot => {
+                if (snapshot.empty) {
+                    // No users yet, show register option
+                    document.getElementById('loginForm').innerHTML += `
+                        <div style="text-align: center; margin-top: 20px;">
+                            <button id="showRegister" style="background: none; border: none; color: var(--primary); cursor: pointer; font-size: 14px;">
+                                Register sebagai Admin Pertama
+                            </button>
+                        </div>
+                    `;
+                    document.getElementById('showRegister').onclick = () => {
+                        document.getElementById('loginForm').style.display = 'none';
+                        document.getElementById('registerForm').style.display = 'block';
+                    };
+                    
+                    // Setup register button
+                    document.getElementById('registerBtn').onclick = registerAdmin;
+                }
+            });
+        }
+        
+        async function loginWithGoogle() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                provider.setCustomParameters({
+                    prompt: 'select_account'
+                });
+                
+                const result = await firebase.auth().signInWithPopup(provider);
+                const user = result.user;
+                
+                // Check if user exists in Firestore
+                const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+                
+                if (!userDoc.exists) {
+                    // New user - check if admin exists
+                    const adminCheck = await firebase.firestore().collection('users')
+                        .where('role', '==', 'admin')
+                        .limit(1)
+                        .get();
+                    
+                    if (adminCheck.empty) {
+                        // First user becomes admin
+                        await firebase.firestore().collection('users').doc(user.uid).set({
+                            uid: user.uid,
+                            email: user.email,
+                            name: user.displayName,
+                            photoURL: user.photoURL,
+                            role: 'admin',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            sites: []
+                        });
+                    } else {
+                        // Regular user - add with viewer role
+                        await firebase.firestore().collection('users').doc(user.uid).set({
+                            uid: user.uid,
+                            email: user.email,
+                            name: user.displayName,
+                            photoURL: user.photoURL,
+                            role: 'viewer',
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            sites: [] // Empty array = access to all sites
+                        });
+                    }
+                }
+                
+                showToast('Login berhasil!');
+                
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('Login gagal: ' + error.message);
+            }
+        }
+        
+        async function registerAdmin() {
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            
+            if (!name || !email || !password) {
+                showToast('Harap isi semua field');
+                return;
+            }
+            
+            try {
+                // Create user with email/password
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Update profile
+                await user.updateProfile({
+                    displayName: name
+                });
+                
+                // Add to Firestore as admin
+                await firebase.firestore().collection('users').doc(user.uid).set({
+                    uid: user.uid,
+                    email: email,
+                    name: name,
+                    role: 'admin',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    sites: []
+                });
+                
+                showToast('Admin berhasil diregister!');
+                
+            } catch (error) {
+                console.error('Register error:', error);
+                showToast('Register gagal: ' + error.message);
+            }
+        }
+        
+        async function loadUserData(user) {
+            // Load user data from Firestore
+            const userDoc = await firebase.firestore().collection('users').doc(user.uid).get();
+            
+            if (userDoc.exists) {
+                window.currentUser = {
+                    ...userDoc.data(),
+                    uid: user.uid
+                };
+                
+                // Update UI with user info
+                updateUserUI();
+                
+                // Load user's sites and data
+                await loadUserSites();
+            }
+        }
+        
+        function updateUserUI() {
+            if (window.currentUser) {
+                const user = window.currentUser;
+                
+                // Update avatar
+                const avatar = document.querySelector('.user-avatar');
+                if (avatar) {
+                    if (user.photoURL) {
+                        avatar.innerHTML = `<img src="${user.photoURL}" style="width: 100%; height: 100%; border-radius: 50%;">`;
+                    } else {
+                        avatar.textContent = user.name?.charAt(0) || 'U';
+                    }
+                }
+                
+                // Update name
+                const userName = document.querySelector('.user-name');
+                if (userName) {
+                    userName.textContent = user.name || user.email;
+                }
+                
+                // Update role badge
+                const roleBadge = document.querySelector('.profile-role');
+                if (roleBadge) {
+                    roleBadge.textContent = user.role === 'admin' ? 'Administrator' : 
+                                           user.role === 'operator' ? 'Operator' : 'Viewer';
+                }
+            }
+        }
+        
+        async function loadUserSites() {
+            // Load sites that user has access to
+            const sitesSnapshot = await firebase.firestore().collection('sites')
+                .where('users', 'array-contains', window.currentUser.uid)
+                .get();
+            
+            if (!sitesSnapshot.empty) {
+                // User has specific sites
+                window.userSites = [];
+                sitesSnapshot.forEach(doc => {
+                    window.userSites.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+            } else {
+                // User can access all sites (admin or empty sites array)
+                const allSites = await firebase.firestore().collection('sites').get();
+                window.userSites = [];
+                allSites.forEach(doc => {
+                    window.userSites.push({
+                        id: doc.id,
+                        ...doc.data()
+                    });
+                });
+            }
+            
+            // Load sites UI
+            loadSitesUI();
+        }
+        
+        function showApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            
+            // Initialize app
+            initializeApp();
+        }
+        
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                firebase.auth().signOut().then(() => {
+                    showToast('Logout berhasil');
+                    showLogin();
+                });
+            }
+        }
+        
+        // ====================
+        // FIREBASE DATA FUNCTIONS
+        // ====================
+        async function loadSitesUI() {
+            const container = document.getElementById('sites-container');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Show loading
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+                    <div style="width: 40px; height: 40px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
+                    <div style="color: var(--text-secondary);">Loading sites...</div>
+                </div>
+            `;
+            
+            try {
+                // Load sites from Firestore
+                const sitesSnapshot = await firebase.firestore().collection('sites').get();
+                
+                if (sitesSnapshot.empty) {
+                    // No sites yet
+                    container.innerHTML = `
+                        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--text-secondary);">
+                            <div style="font-size: 64px; margin-bottom: 20px; opacity: 0.3;">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <div style="font-size: 18px; font-weight: 500; margin-bottom: 10px;">
+                                Belum Ada Site
+                            </div>
+                            <div style="font-size: 14px; margin-bottom: 20px;">
+                                Tambahkan site pertama Anda
+                            </div>
+                            <button class="btn btn-primary" onclick="addNewSite()">
+                                <i class="fas fa-plus"></i>
+                                Tambah Site Pertama
+                            </button>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Clear and show sites
+                container.innerHTML = '';
+                
+                sitesSnapshot.forEach(doc => {
+                    const site = {
+                        id: doc.id,
+                        ...doc.data()
+                    };
+                    
+                    // Count units for this site
+                    const unitsCount = site.units ? site.units.length : 0;
+                    const backlogCount = site.backlogCount || 0;
+                    
+                    const siteCard = document.createElement('div');
+                    siteCard.className = 'site-card';
+                    siteCard.onclick = () => selectSite(site.id);
+                    
+                    siteCard.innerHTML = `
+                        <div class="site-header">
+                            <div class="site-name">${site.name}</div>
+                            <div class="site-status ${site.status === 'active' ? '' : 'maintenance'}">
+                                ${site.status === 'active' ? 'Active' : 'Maintenance'}
+                            </div>
+                        </div>
+                        <div class="site-meta">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>${site.location || 'No location set'}</span>
+                        </div>
+                        <div class="site-stats">
+                            <div class="stat">
+                                <div class="stat-number">${unitsCount}</div>
+                                <div class="stat-label">Units</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">${backlogCount}</div>
+                                <div class="stat-label">Backlog</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">${site.health || '0%'}</div>
+                                <div class="stat-label">Health</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-number">${site.manager || '-'}</div>
+                                <div class="stat-label">Manager</div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    container.appendChild(siteCard);
+                });
+                
+                // Add "Add New Site" card
+                const addCard = document.createElement('div');
+                addCard.className = 'site-card';
+                addCard.onclick = addNewSite;
+                addCard.style.border = '2px dashed var(--border)';
+                addCard.style.background = 'var(--background)';
+                addCard.innerHTML = `
+                    <div style="text-align: center; padding: 40px 20px; color: var(--text-secondary);">
+                        <div style="font-size: 48px; margin-bottom: 16px;">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <div style="font-size: 16px; font-weight: 600; color: var(--primary);">
+                            Add New Site
+                        </div>
+                        <div style="font-size: 13px; margin-top: 8px;">
+                            Click to create new site
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(addCard);
+                
+            } catch (error) {
+                console.error('Error loading sites:', error);
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--danger);">
+                        <div style="font-size: 48px; margin-bottom: 20px;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div style="font-size: 16px; font-weight: 500; margin-bottom: 10px;">
+                            Error Loading Sites
+                        </div>
+                        <div style="font-size: 14px;">${error.message}</div>
+                    </div>
+                `;
+            }
+        }
+        
+        async function addNewSite() {
+            const name = prompt('Masukkan nama site baru:');
+            if (!name) return;
+            
+            const location = prompt('Masukkan lokasi site:') || '';
+            const manager = prompt('Masukkan nama site manager:') || '';
+            
+            try {
+                // Create site in Firestore
+                const siteRef = await firebase.firestore().collection('sites').add({
+                    name: name,
+                    location: location,
+                    manager: manager,
+                    status: 'active',
+                    health: '100%',
+                    units: [],
+                    backlogCount: 0,
+                    createdBy: window.currentUser.uid,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    users: [window.currentUser.uid] // Give creator access
+                });
+                
+                showToast(`Site "${name}" berhasil dibuat!`);
+                
+                // Reload sites
+                await loadUserSites();
+                
+            } catch (error) {
+                console.error('Error adding site:', error);
+                showToast('Gagal menambahkan site: ' + error.message);
+            }
+        }
+        
+        // ====================
+        // INITIALIZE APP
+        // ====================
+        function initializeApp() {
+            // Initialize all app functions
+            if (typeof showPage === 'function') {
+                showPage('sites');
+            }
+            
+            if (typeof updateDashboard === 'function') {
+                updateDashboard();
+            }
+            
+            // Register service worker for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(() => console.log('Service Worker registered'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            }
+            
+            // Show welcome message
+            setTimeout(() => {
+                if (window.currentUser) {
+                    showToast(`Selamat datang, ${window.currentUser.name || window.currentUser.email}!`);
+                }
+            }, 1000);
+        }
+        
+        // ====================
+        // UTILITY FUNCTIONS
+        // ====================
+        function showToast(message, type = 'success') {
+            // Create toast
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                background: ${type === 'success' ? 'var(--success)' : 'var(--danger)'};
+                color: white;
+                padding: 16px 24px;
+                border-radius: var(--radius-sm);
+                box-shadow: var(--shadow-lg);
+                z-index: 1000;
+                animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s;
+                font-size: 14px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                max-width: 300px;
+            `;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
+        }
+        
+        // ====================
+        // AUTO-CLEANUP SCHEDULER
+        // ====================
+        async function checkAutoCleanup() {
+            try {
+                // Check for backlog items closed more than 30 days ago
+                const thirtyDaysAgo = new Date();
+                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                
+                const oldBacklog = await firebase.firestore().collection('backlogs')
+                    .where('status', '==', 'closed')
+                    .where('closedAt', '<', thirtyDaysAgo)
+                    .get();
+                
+                if (!oldBacklog.empty) {
+                    // Delete old backlog items
+                    const batch = firebase.firestore().batch();
+                    oldBacklog.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    
+                    await batch.commit();
+                    console.log(`Auto-deleted ${oldBacklog.size} old backlog items`);
+                }
+                
+            } catch (error) {
+                console.error('Auto-cleanup error:', error);
+            }
+        }
+        
+        // Run cleanup check every hour
+        setInterval(checkAutoCleanup, 60 * 60 * 1000);
+        // Initial check
+        setTimeout(checkAutoCleanup, 5000);
+        
+        // Add CSS animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+            @keyframes slideIn {
+                from { transform: translateX(100%); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

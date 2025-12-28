@@ -5,10 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Backlog Management System</title>
     
-    <!-- PWA -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a237e">
-    
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -902,7 +898,6 @@
                 <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
                     <p style="text-align: center; color: #666; font-size: 12px; line-height: 1.5;">
                         © 2024 Backlog Management System<br>
-                        Data tersimpan secara aman di Firebase<br>
                         Auto-cleanup data selesai setelah 30 hari
                     </p>
                 </div>
@@ -945,9 +940,6 @@
             </button>
             <button class="nav-btn" onclick="showPage('backlog')">
                 <i class="fas fa-clipboard-list"></i> Backlog
-            </button>
-            <button class="nav-btn" onclick="showPage('reports')">
-                <i class="fas fa-chart-bar"></i> Reports
             </button>
         </nav>
 
@@ -1032,10 +1024,10 @@
                 <div class="control-bar">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="siteSearch" placeholder="Search sites...">
+                        <input type="text" id="siteSearch" placeholder="Search sites..." onkeyup="filterSites()">
                     </div>
                     
-                    <select class="filter-select" id="siteStatusFilter">
+                    <select class="filter-select" id="siteStatusFilter" onchange="filterSites()">
                         <option value="">All Status</option>
                         <option value="active">Active</option>
                         <option value="inactive">Inactive</option>
@@ -1064,10 +1056,10 @@
                 <div class="control-bar">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="unitSearch" placeholder="Search units...">
+                        <input type="text" id="unitSearch" placeholder="Search units..." onkeyup="filterUnits()">
                     </div>
                     
-                    <select class="filter-select" id="unitTypeFilter">
+                    <select class="filter-select" id="unitTypeFilter" onchange="filterUnits()">
                         <option value="">All Types</option>
                         <option value="engine">Engine</option>
                         <option value="pump">Pump</option>
@@ -1103,10 +1095,10 @@
                 <div class="control-bar">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" id="backlogSearch" placeholder="Search part number or description...">
+                        <input type="text" id="backlogSearch" placeholder="Search part number or description..." onkeyup="filterBacklog()">
                     </div>
                     
-                    <select class="filter-select" id="backlogStatusFilter">
+                    <select class="filter-select" id="backlogStatusFilter" onchange="filterBacklog()">
                         <option value="">All Status</option>
                         <option value="open">Open</option>
                         <option value="closed">Closed</option>
@@ -1115,12 +1107,4 @@
                     <button class="btn btn-export" onclick="exportBacklogToExcel()">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </button>
-                </div>
-                
-                <div class="table-container">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>Part Number</th>
-                                <th>Description</th>
-                               
+                </

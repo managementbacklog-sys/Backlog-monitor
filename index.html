@@ -8,14 +8,6 @@
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Firebase -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-    
-    <!-- Excel Export -->
-    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
-    
     <style>
         :root {
             --primary: #1a237e;
@@ -70,10 +62,14 @@
             margin-bottom: 20px;
         }
         
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
         /* ===== LOGIN SCREEN ===== */
         #loginScreen {
             min-height: 100vh;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             padding: 20px;
@@ -107,26 +103,47 @@
             font-size: 32px;
         }
         
-        .google-login-btn {
+        .login-btn {
             width: 100%;
             padding: 14px;
-            background: white;
-            border: 2px solid var(--gray-200);
+            background: var(--primary);
+            border: none;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
             font-weight: 500;
-            color: var(--gray-900);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .login-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(26, 35, 126, 0.2);
+        }
+        
+        .demo-login {
+            width: 100%;
+            padding: 14px;
+            background: var(--success);
+            border: none;
+            border-radius: 10px;
+            font-weight: 500;
+            color: white;
             cursor: pointer;
             transition: all 0.3s;
             font-size: 16px;
         }
         
-        .google-login-btn:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(26, 35, 126, 0.1);
+        .demo-login:hover {
+            background: #00a843;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 200, 83, 0.2);
         }
         
         /* ===== MAIN APP ===== */
@@ -140,12 +157,6 @@
             position: sticky;
             top: 0;
             z-index: 100;
-        }
-        
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 15px;
         }
         
         .app-title {
@@ -256,17 +267,11 @@
             border-color: var(--primary);
         }
         
-        .site-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
         .site-name {
             font-size: 18px;
             font-weight: 600;
             color: var(--gray-900);
+            margin-bottom: 10px;
         }
         
         .site-status {
@@ -274,6 +279,8 @@
             border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            display: inline-block;
+            margin-bottom: 15px;
         }
         
         .status-active {
@@ -287,18 +294,18 @@
         }
         
         .site-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
             color: var(--gray-700);
             margin-bottom: 15px;
             font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
         .site-stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
+            gap: 10px;
             margin-top: 15px;
         }
         
@@ -322,36 +329,11 @@
         }
         
         /* ===== UNITS PAGE ===== */
-        .units-container {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        .units-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        
-        .back-btn {
-            padding: 8px 16px;
-            background: var(--gray-100);
-            border: none;
-            border-radius: 6px;
-            color: var(--gray-700);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
         .units-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 15px;
+            margin-top: 20px;
         }
         
         .unit-card {
@@ -368,17 +350,11 @@
             box-shadow: 0 4px 12px rgba(26, 35, 126, 0.1);
         }
         
-        .unit-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
         .unit-id {
             font-size: 16px;
             font-weight: 600;
             color: var(--gray-900);
+            margin-bottom: 5px;
         }
         
         .unit-type {
@@ -387,6 +363,8 @@
             background: var(--gray-100);
             padding: 2px 8px;
             border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 10px;
         }
         
         .unit-meta {
@@ -409,13 +387,6 @@
             border-radius: 12px;
             padding: 20px;
             margin-top: 20px;
-        }
-        
-        .backlog-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
         }
         
         .unit-info {
@@ -518,13 +489,13 @@
             color: white;
         }
         
-        .btn-export {
-            background: #4CAF50;
+        .btn-danger {
+            background: var(--danger);
             color: white;
         }
         
-        .btn-print {
-            background: #2196F3;
+        .btn-export {
+            background: #4CAF50;
             color: white;
         }
         
@@ -783,11 +754,6 @@
             background: var(--warning);
         }
         
-        /* ===== ANIMATIONS ===== */
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-        
         @keyframes modalSlideIn {
             from {
                 opacity: 0;
@@ -843,21 +809,6 @@
                 grid-template-columns: 1fr;
             }
         }
-        
-        @media (max-width: 480px) {
-            .login-card {
-                padding: 30px 20px;
-            }
-            
-            .stats-container {
-                grid-template-columns: 1fr;
-            }
-            
-            .btn {
-                padding: 10px 15px;
-                font-size: 13px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -871,7 +822,7 @@
     </div>
 
     <!-- LOGIN SCREEN -->
-    <div id="loginScreen" style="display: none;">
+    <div id="loginScreen">
         <div class="login-card">
             <div class="login-logo">
                 <div class="logo-icon">🏭</div>
@@ -880,25 +831,23 @@
             </div>
             
             <div id="loginForm">
-                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Login dengan Google</h2>
+                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Login</h2>
                 <p style="text-align: center; color: #666; margin-bottom: 30px; font-size: 14px;">
-                    Gunakan akun Google perusahaan untuk akses sistem
+                    Untuk mengakses sistem backlog management
                 </p>
                 
-                <button id="googleLoginBtn" class="google-login-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-                    </svg>
-                    <span>Login dengan Google</span>
+                <button class="login-btn" onclick="login()">
+                    <i class="fas fa-sign-in-alt"></i> Login ke Sistem
+                </button>
+                
+                <button class="demo-login" onclick="demoLogin()">
+                    <i class="fas fa-play-circle"></i> Try Demo Mode
                 </button>
                 
                 <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
                     <p style="text-align: center; color: #666; font-size: 12px; line-height: 1.5;">
                         © 2024 Backlog Management System<br>
-                        Auto-cleanup data selesai setelah 30 hari
+                        Data tersimpan di browser Anda secara lokal
                     </p>
                 </div>
             </div>
@@ -916,10 +865,10 @@
             </div>
             
             <div class="user-info">
-                <div class="user-avatar" id="userAvatar">U</div>
+                <div class="user-avatar" id="userAvatar">A</div>
                 <div>
-                    <div id="userName" style="font-weight: 500;">User</div>
-                    <div id="userRole" style="font-size: 12px; color: #666;">Admin</div>
+                    <div id="userName" style="font-weight: 500;">Admin</div>
+                    <div style="font-size: 12px; color: #666;">Administrator</div>
                 </div>
                 <button class="logout-btn" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i> Logout
@@ -996,7 +945,7 @@
                         <h3 style="margin-bottom: 15px;">Recent Sites</h3>
                         <div id="recentSites">
                             <div style="text-align: center; padding: 20px; color: #666;">
-                                Loading sites...
+                                No sites added yet
                             </div>
                         </div>
                     </div>
@@ -1005,7 +954,7 @@
                         <h3 style="margin-bottom: 15px;">Recent Backlog Items</h3>
                         <div id="recentBacklog">
                             <div style="text-align: center; padding: 20px; color: #666;">
-                                Loading backlog items...
+                                No backlog items yet
                             </div>
                         </div>
                     </div>
@@ -1041,12 +990,12 @@
 
             <!-- UNITS PAGE -->
             <div id="unitsPage" class="page">
-                <div class="units-header">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div>
-                        <button class="back-btn" onclick="showPage('sites')" id="unitsBackBtn" style="display: none;">
+                        <button class="btn" onclick="showPage('sites')" id="unitsBackBtn" style="display: none; background: var(--gray-100);">
                             <i class="fas fa-arrow-left"></i> Back to Sites
                         </button>
-                        <h1 id="unitsTitle">Unit Management</h1>
+                        <h1 id="unitsTitle" style="display: inline-block; margin-left: 15px;">Unit Management</h1>
                     </div>
                     <button class="btn btn-primary" onclick="openUnitModal()">
                         <i class="fas fa-plus"></i> Add New Unit
@@ -1076,12 +1025,12 @@
 
             <!-- BACKLOG PAGE -->
             <div id="backlogPage" class="page">
-                <div class="backlog-header">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                     <div>
-                        <button class="back-btn" onclick="showPage('units')" id="backlogBackBtn" style="display: none;">
+                        <button class="btn" onclick="showPage('units')" id="backlogBackBtn" style="display: none; background: var(--gray-100);">
                             <i class="fas fa-arrow-left"></i> Back to Units
                         </button>
-                        <h1 id="backlogTitle">Backlog Management</h1>
+                        <h1 id="backlogTitle" style="display: inline-block; margin-left: 15px;">Backlog Management</h1>
                     </div>
                     <button class="btn btn-primary" onclick="openBacklogModal()">
                         <i class="fas fa-plus"></i> Add Backlog Item
@@ -1107,4 +1056,82 @@
                     <button class="btn btn-export" onclick="exportBacklogToExcel()">
                         <i class="fas fa-file-excel"></i> Export Excel
                     </button>
-                </
+                </div>
+                
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Part Number</th>
+                                <th>Description</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Date Added</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="backlogTableBody">
+                            <!-- Backlog items will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODALS -->
+    <!-- Site Modal -->
+    <div id="siteModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="siteModalTitle">Add New Site</h2>
+                <button class="close-modal" onclick="closeModal('siteModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="siteName">Site Name *</label>
+                    <input type="text" id="siteName" class="form-control" placeholder="Enter site name" required>
+                </div>
+                <div class="form-group">
+                    <label for="siteLocation">Location</label>
+                    <input type="text" id="siteLocation" class="form-control" placeholder="Enter location">
+                </div>
+                <div class="form-group">
+                    <label for="siteManager">Site Manager</label>
+                    <input type="text" id="siteManager" class="form-control" placeholder="Enter manager name">
+                </div>
+                <div class="form-group">
+                    <label for="siteStatus">Status</label>
+                    <select id="siteStatus" class="form-control">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeModal('siteModal')">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSite()">Save Site</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Unit Modal -->
+    <div id="unitModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="unitModalTitle">Add New Unit</h2>
+                <button class="close-modal" onclick="closeModal('unitModal')">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="unitSite">Site *</label>
+                    <select id="unitSite" class="form-control" required>
+                        <option value="">Select Site</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="unitId">Unit ID *</label>
+                    <input type="text" id="unitId" class="form-control" placeholder="e.g., UNIT-001" required>
+                </div>
+                <div class="form-group">
+                    <label for="unitName">Unit Name *</

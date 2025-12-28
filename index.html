@@ -348,4 +348,1068 @@
         
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0,
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        /* ===== DATA TABLE ===== */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+        
+        .data-table th {
+            background: var(--primary);
+            color: white;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .data-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--gray-100);
+            font-size: 14px;
+        }
+        
+        .data-table tr:hover {
+            background: var(--gray-50);
+        }
+        
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .status-pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        
+        .status-progress {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        
+        .status-completed {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .action-buttons-cell {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            color: white;
+        }
+        
+        .btn-edit {
+            background: var(--secondary);
+        }
+        
+        .btn-delete {
+            background: var(--danger);
+        }
+        
+        .btn-icon:hover {
+            transform: scale(1.1);
+        }
+        
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 500px;
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-header h2 {
+            color: var(--gray-900);
+            font-size: 20px;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray-700);
+        }
+        
+        .modal-body {
+            padding: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--gray-700);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-200);
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(26, 35, 126, 0.1);
+        }
+        
+        .modal-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+        
+        .btn-cancel {
+            background: var(--gray-100);
+            color: var(--gray-700);
+        }
+        
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 16px 24px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            animation: toastSlideIn 0.3s ease, toastFadeOut 0.3s ease 2.7s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            max-width: 300px;
+        }
+        
+        .toast.error {
+            background: var(--danger);
+        }
+        
+        .toast.warning {
+            background: var(--warning);
+        }
+        
+        /* ===== FOOTER ===== */
+        .app-footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--gray-700);
+            font-size: 14px;
+            border-top: 1px solid var(--gray-200);
+            background: white;
+            margin-top: 30px;
+        }
+        
+        /* ===== ANIMATIONS ===== */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes toastSlideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes toastFadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .control-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .action-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .main-content {
+                padding: 15px;
+            }
+            
+            .modal-content {
+                margin: 0 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                padding: 10px 15px;
+                font-size: 13px;
+            }
+        }
+        
+        /* ===== PRINT STYLES ===== */
+        @media print {
+            .app-header,
+            .control-bar,
+            .btn-print,
+            .btn-export,
+            .action-buttons-cell,
+            .app-footer {
+                display: none !important;
+            }
+            
+            .table-container {
+                box-shadow: none;
+                border: 1px solid #000;
+            }
+            
+            body {
+                background: white;
+            }
+            
+            .main-content {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- LOADING SCREEN -->
+    <div id="loadingScreen">
+        <div style="text-align: center;">
+            <div class="spinner"></div>
+            <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Loading Backlog Monitor</div>
+            <div style="color: #666;">Initializing system...</div>
+        </div>
+    </div>
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen" style="display: none;">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="logo-icon">🚛</div>
+                <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 10px;">Volvo Parts Backlog</h1>
+                <p style="color: #666; font-size: 14px;">Inventory Tracking System</p>
+            </div>
+            
+            <div id="loginForm">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #333;">Login dengan Google</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 30px; font-size: 14px;">
+                    Gunakan akun Google perusahaan untuk akses sistem
+                </p>
+                
+                <button id="googleLoginBtn" class="google-login-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                    </svg>
+                    <span>Login dengan Google</span>
+                </button>
+                
+                <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                    <p style="text-align: center; color: #666; font-size: 12px; line-height: 1.5;">
+                        © 2024 Volvo Parts Backlog Tracker<br>
+                        Data tersimpan secara aman di Firebase<br>
+                        Auto-cleanup data selesai setelah 30 hari
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP (hidden until login) -->
+    <div id="appContainer" style="display: none;">
+        <!-- HEADER -->
+        <header class="app-header">
+            <div class="header-left">
+                <div class="app-title">
+                    <i class="fas fa-truck-loading"></i> Volvo Parts Backlog Tracker
+                </div>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div>
+                    <div id="userName" style="font-weight: 500;">User</div>
+                    <div id="userRole" style="font-size: 12px; color: #666;">Loading...</div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN CONTENT -->
+        <main class="main-content">
+            <!-- STATS CARDS -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon total">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Total Backlog</h3>
+                        <div class="stat-number" id="totalBacklog">0</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon pending">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Pending</h3>
+                        <div class="stat-number" id="pendingCount">0</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon progress">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>On Progress</h3>
+                        <div class="stat-number" id="progressCount">0</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon completed">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>Completed</h3>
+                        <div class="stat-number" id="completedCount">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CONTROL BAR -->
+            <div class="control-bar">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Cari part number, deskripsi, atau customer...">
+                </div>
+                
+                <select class="filter-select" id="statusFilter">
+                    <option value="">Semua Status</option>
+                    <option value="Pending">Pending</option>
+                    <option value="On Progress">On Progress</option>
+                    <option value="Completed">Completed</option>
+                </select>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="openAddModal()">
+                        <i class="fas fa-plus"></i> Tambah Item Baru
+                    </button>
+                    <button class="btn btn-export" onclick="exportToExcel()">
+                        <i class="fas fa-file-excel"></i> Export Excel
+                    </button>
+                    <button class="btn btn-print" onclick="printTable()">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                </div>
+            </div>
+
+            <!-- DATA TABLE -->
+            <div class="table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Part Number</th>
+                            <th>Deskripsi</th>
+                            <th>Qty Backlog</th>
+                            <th>Customer</th>
+                            <th>Status</th>
+                            <th>Tanggal Input</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTableBody">
+                        <!-- Data akan dimuat di sini -->
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <div style="color: #666; font-size: 16px;">
+                                    <i class="fas fa-database" style="font-size: 48px; margin-bottom: 20px; opacity: 0.3;"></i><br>
+                                    Belum ada data backlog. Klik "Tambah Item Baru" untuk mulai.
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- SUMMARY -->
+            <div style="background: white; padding: 20px; border-radius: 12px; margin-bottom: 30px;">
+                <h3 style="margin-bottom: 15px; color: #333;">Summary</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Total Quantity</div>
+                        <div style="font-size: 20px; font-weight: bold; color: var(--primary);" id="totalQuantity">0</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Last Updated</div>
+                        <div style="font-size: 20px; font-weight: bold; color: var(--primary);" id="lastUpdated">-</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 12px; color: #666; margin-bottom: 5px;">Total Items</div>
+                        <div style="font-size: 20px; font-weight: bold; color: var(--primary);" id="totalItems">0</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="app-footer">
+            <p>Volvo Parts Backlog Tracker v1.0 • Data akan auto-cleanup setelah 30 hari dari status Completed</p>
+        </footer>
+
+        <!-- ADD/EDIT MODAL -->
+        <div id="itemModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="modalTitle">Tambah Item Baru</h2>
+                    <button class="close-modal" onclick="closeModal()">&times;</button>
+                </div>
+                
+                <div class="modal-body">
+                    <input type="hidden" id="editIndex">
+                    
+                    <div class="form-group">
+                        <label for="partNumber">Part Number *</label>
+                        <input type="text" id="partNumber" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="description">Deskripsi Part *</label>
+                        <input type="text" id="description" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="quantity">Quantity Backlog *</label>
+                        <input type="number" id="quantity" class="form-control" min="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customer">Customer *</label>
+                        <input type="text" id="customer" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="status">Status *</label>
+                        <select id="status" class="form-control" required>
+                            <option value="">Pilih Status</option>
+                            <option value="Pending">Pending</option>
+                            <option value="On Progress">On Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="modal-footer">
+                    <button class="btn btn-cancel" onclick="closeModal()">Batal</button>
+                    <button class="btn btn-primary" onclick="saveItem()">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIREBASE CONFIG -->
+    <script src="firebase-config.js"></script>
+    
+    <!-- MAIN SCRIPT -->
+    <script>
+        // ====================
+        // GLOBAL VARIABLES
+        // ====================
+        let backlogData = [];
+        let currentUser = null;
+        let editIndex = -1;
+
+        // ====================
+        // INITIALIZE
+        // ====================
+        document.addEventListener('DOMContentLoaded', async function() {
+            try {
+                // Initialize Firebase
+                if (!firebase.apps.length) {
+                    firebase.initializeApp(firebaseConfig);
+                }
+                
+                // Check auth state
+                firebase.auth().onAuthStateChanged(async (user) => {
+                    if (user) {
+                        // User logged in
+                        currentUser = user;
+                        await initializeApp();
+                    } else {
+                        // No user, show login
+                        showLoginScreen();
+                    }
+                    
+                    // Hide loading
+                    document.getElementById('loadingScreen').style.display = 'none';
+                });
+                
+            } catch (error) {
+                console.error('Init error:', error);
+                showError('Failed to initialize: ' + error.message);
+            }
+        });
+
+        // ====================
+        // AUTH FUNCTIONS
+        // ====================
+        function showLoginScreen() {
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('appContainer').style.display = 'none';
+            
+            document.getElementById('googleLoginBtn').onclick = loginWithGoogle;
+        }
+
+        async function loginWithGoogle() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await firebase.auth().signInWithPopup(provider);
+                showToast('Login berhasil!');
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('Login gagal: ' + error.message, 'error');
+            }
+        }
+
+        function logout() {
+            if (confirm('Apakah Anda yakin ingin logout?')) {
+                firebase.auth().signOut().then(() => {
+                    showToast('Logout berhasil');
+                    backlogData = [];
+                    currentUser = null;
+                    showLoginScreen();
+                });
+            }
+        }
+
+        // ====================
+        // APP FUNCTIONS
+        // ====================
+        async function initializeApp() {
+            // Show app
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            
+            // Update user info
+            updateUserInfo();
+            
+            // Load data
+            await loadData();
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Show welcome
+            showToast(`Selamat datang, ${currentUser.displayName || currentUser.email}!`);
+        }
+
+        function updateUserInfo() {
+            document.getElementById('userName').textContent = 
+                currentUser.displayName || currentUser.email;
+            document.getElementById('userAvatar').textContent = 
+                currentUser.displayName ? currentUser.displayName.charAt(0).toUpperCase() : 'U';
+            
+            // Set avatar image if available
+            if (currentUser.photoURL) {
+                document.getElementById('userAvatar').innerHTML = 
+                    `<img src="${currentUser.photoURL}" style="width:100%;height:100%;border-radius:50%;">`;
+            }
+        }
+
+        // ====================
+        // DATA FUNCTIONS
+        // ====================
+        async function loadData() {
+            try {
+                // Load from localStorage first (for offline)
+                const localData = localStorage.getItem('backlogData');
+                if (localData) {
+                    backlogData = JSON.parse(localData);
+                    renderTable();
+                    updateStats();
+                }
+                
+                // Try to load from Firestore
+                if (currentUser) {
+                    const db = firebase.firestore();
+                    const snapshot = await db.collection('backlogs')
+                        .where('userId', '==', currentUser.uid)
+                        .orderBy('createdAt', 'desc')
+                        .get();
+                    
+                    if (!snapshot.empty) {
+                        backlogData = [];
+                        snapshot.forEach(doc => {
+                            const data = doc.data();
+                            backlogData.push({
+                                id: doc.id,
+                                ...data
+                            });
+                        });
+                        
+                        // Save to localStorage
+                        localStorage.setItem('backlogData', JSON.stringify(backlogData));
+                        renderTable();
+                        updateStats();
+                    }
+                }
+                
+            } catch (error) {
+                console.error('Load error:', error);
+                // Continue with local data if available
+            }
+        }
+
+        async function saveData() {
+            try {
+                // Save to localStorage
+                localStorage.setItem('backlogData', JSON.stringify(backlogData));
+                
+                // Save to Firestore if online
+                if (currentUser && navigator.onLine) {
+                    const db = firebase.firestore();
+                    const batch = db.batch();
+                    
+                    // Clear existing data
+                    const snapshot = await db.collection('backlogs')
+                        .where('userId', '==', currentUser.uid)
+                        .get();
+                    
+                    snapshot.forEach(doc => {
+                        batch.delete(doc.ref);
+                    });
+                    
+                    // Add all items
+                    backlogData.forEach(item => {
+                        const docRef = db.collection('backlogs').doc();
+                        batch.set(docRef, {
+                            ...item,
+                            userId: currentUser.uid,
+                            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                        });
+                    });
+                    
+                    await batch.commit();
+                }
+                
+            } catch (error) {
+                console.error('Save error:', error);
+                showToast('Gagal sync ke cloud, data disimpan lokal', 'warning');
+            }
+        }
+
+        // ====================
+        // TABLE FUNCTIONS
+        // ====================
+        function renderTable() {
+            const tbody = document.getElementById('dataTableBody');
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            let filteredData = backlogData;
+            
+            // Apply search filter
+            if (searchTerm) {
+                filteredData = filteredData.filter(item => 
+                    item.partNumber.toLowerCase().includes(searchTerm) ||
+                    item.description.toLowerCase().includes(searchTerm) ||
+                    item.customer.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Apply status filter
+            if (statusFilter) {
+                filteredData = filteredData.filter(item => item.status === statusFilter);
+            }
+            
+            if (filteredData.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" style="text-align: center; padding: 40px;">
+                            <div style="color: #666;">
+                                <i class="fas fa-search" style="font-size: 48px; margin-bottom: 20px; opacity: 0.3;"></i><br>
+                                Tidak ada data yang sesuai dengan filter
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            
+            filteredData.forEach((item, index) => {
+                const date = item.date ? new Date(item.date).toLocaleDateString('id-ID') : new Date().toLocaleDateString('id-ID');
+                
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${item.partNumber}</strong></td>
+                    <td>${item.description}</td>
+                    <td style="text-align: center;"><strong>${item.quantity}</strong></td>
+                    <td>${item.customer}</td>
+                    <td>
+                        <span class="status-badge status-${item.status.replace(' ', '').toLowerCase()}">
+                            ${item.status}
+                        </span>
+                    </td>
+                    <td>${date}</td>
+                    <td>
+                        <div class="action-buttons-cell">
+                            <button class="btn-icon btn-edit" onclick="editItem(${index})" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-delete" onclick="deleteItem(${index})" title="Hapus">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateStats() {
+            const total = backlogData.length;
+            const pending = backlogData.filter(item => item.status === 'Pending').length;
+            const progress = backlogData.filter(item => item.status === 'On Progress').length;
+            const completed = backlogData.filter(item => item.status === 'Completed').length;
+            const totalQty = backlogData.reduce((sum, item) => sum + parseInt(item.quantity || 0), 0);
+            
+            document.getElementById('totalBacklog').textContent = total;
+            document.getElementById('pendingCount').textContent = pending;
+            document.getElementById('progressCount').textContent = progress;
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('totalQuantity').textContent = totalQty.toLocaleString();
+            document.getElementById('totalItems').textContent = total;
+            document.getElementById('lastUpdated').textContent = new Date().toLocaleString('id-ID');
+        }
+
+        // ====================
+        // MODAL FUNCTIONS
+        // ====================
+        function openAddModal() {
+            editIndex = -1;
+            document.getElementById('modalTitle').textContent = 'Tambah Item Baru';
+            document.getElementById('editIndex').value = '';
+            document.getElementById('partNumber').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('quantity').value = '';
+            document.getElementById('customer').value = '';
+            document.getElementById('status').value = '';
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        function editItem(index) {
+            editIndex = index;
+            const item = backlogData[index];
+            
+            document.getElementById('modalTitle').textContent = 'Edit Item';
+            document.getElementById('editIndex').value = index;
+            document.getElementById('partNumber').value = item.partNumber;
+            document.getElementById('description').value = item.description;
+            document.getElementById('quantity').value = item.quantity;
+            document.getElementById('customer').value = item.customer;
+            document.getElementById('status').value = item.status;
+            document.getElementById('itemModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('itemModal').style.display = 'none';
+        }
+
+        async function saveItem() {
+            const partNumber = document.getElementById('partNumber').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const quantity = document.getElementById('quantity').value.trim();
+            const customer = document.getElementById('customer').value.trim();
+            const status = document.getElementById('status').value;
+            
+            // Validation
+            if (!partNumber || !description || !quantity || !customer || !status) {
+                showToast('Harap isi semua field yang wajib!', 'warning');
+                return;
+            }
+            
+            if (isNaN(quantity) || parseInt(quantity) <= 0) {
+                showToast('Quantity harus angka positif!', 'warning');
+                return;
+            }
+            
+            const item = {
+                partNumber,
+                description,
+                quantity: parseInt(quantity),
+                customer,
+                status,
+                date: new Date().toISOString()
+            };
+            
+            if (editIndex === -1) {
+                // Add new item
+                backlogData.unshift(item);
+                showToast('Item berhasil ditambahkan!');
+            } else {
+                // Update existing item
+                backlogData[editIndex] = item;
+                showToast('Item berhasil diperbarui!');
+            }
+            
+            // Save data
+            await saveData();
+            
+            // Update UI
+            renderTable();
+            updateStats();
+            closeModal();
+        }
+
+        async function deleteItem(index) {
+            if (!confirm('Apakah Anda yakin ingin menghapus item ini?')) return;
+            
+            backlogData.splice(index, 1);
+            
+            // Save data
+            await saveData();
+            
+            // Update UI
+            renderTable();
+            updateStats();
+            showToast('Item berhasil dihapus!');
+        }
+
+        // ====================
+        // EXPORT & PRINT
+        // ====================
+        function exportToExcel() {
+            if (backlogData.length === 0) {
+                showToast('Tidak ada data untuk di-export!', 'warning');
+                return;
+            }
+            
+            try {
+                // Prepare data
+                const exportData = backlogData.map(item => ({
+                    'Part Number': item.partNumber,
+                    'Deskripsi': item.description,
+                    'Quantity': item.quantity,
+                    'Customer': item.customer,
+                    'Status': item.status,
+                    'Tanggal Input': new Date(item.date).toLocaleDateString('id-ID')
+                }));
+                
+                // Create worksheet
+                const ws = XLSX.utils.json_to_sheet(exportData);
+                
+                // Create workbook
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Backlog Data');
+                
+                // Generate filename
+                const filename = `volvo_backlog_${new Date().toISOString().split('T')[0]}.xlsx`;
+                
+                // Download
+                XLSX.writeFile(wb, filename);
+                showToast('Data berhasil diexport ke Excel!');
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                showToast('Gagal export data!', 'error');
+            }
+        }
+
+        function printTable() {
+            window.print();
+        }
+
+        // ====================
+        // EVENT LISTENERS
+        // ====================
+        function setupEventListeners() {
+            document.getElementById('searchInput').addEventListener('input', renderTable);
+            document.getElementById('statusFilter').addEventListener('change', renderTable);
+            
+            // Auto-save every 30 seconds
+            setInterval(async () => {
+                if (backlogData.length > 0) {
+                    await saveData();
+                }
+            }, 30000);
+            
+            // Check for auto-cleanup
+            checkAutoCleanup();
+        }
+
+        // ====================
+        // AUTO-CLEANUP
+        // ====================
+        function checkAutoCleanup() {
+            const thirtyDaysAgo = new Date();
+            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+            
+            let changed = false;
+            
+            for (let i = backlogData.length - 1; i >= 0; i--) {
+                const item = backlogData[i];
+                const itemDate = new Date(item.date);
+                
+                // Remove completed items older than 30 days
+                if (item.status === 'Completed' && itemDate < thirtyDaysAgo) {
+                    backlogData.splice(i, 1);
+                    changed = true;
+                }
+            }
+            
+            if (changed) {
+                saveData();
+                renderTable();
+                updateStats();
+                showToast('Auto-cleanup: Data completed >30 hari telah dihapus');
+            }
+        }
+
+        // ====================
+        // UTILITIES
+        // ====================
+        function showToast(message, type = 'success') {
+            // Remove existing toast
+            const existing = document.querySelector('.toast');
+            if (existing) existing.remove();
+            
+            // Create new toast
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-triangle'}"></i>
+                <span>${message}</span>
+            `;
+            
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
+        }
+
+        function showError(message) {
+            document.getElementById('loadingScreen').innerHTML = `
+                <div style="text-align: center; padding: 20px;">
+                    <div style="color: var(--danger); font-size: 48px; margin-bottom: 20px;">⚠️</div>
+                    <div style="font-size: 18px; font-weight: 600; margin-bottom: 10px;">Error</div>
+                    <div style="color: #666; margin-bottom: 20px;">${message}</div>
+                    <button onclick="location.reload()" style="padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">
+                        Reload Page
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+    </html>
